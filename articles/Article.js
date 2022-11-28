@@ -1,7 +1,8 @@
 const Sequelize = require("sequelize");
 const connection = require("../database/database");
+const Category = require("../categories/Category");
 
-const article = connection.define("tb_articles",{
+const Article = connection.define("tb_articles",{
     title:{
         type: Sequelize.STRING,
         allowNull: false
@@ -16,4 +17,10 @@ const article = connection.define("tb_articles",{
     }
 });
 
-module.exports = article;
+//OneToOne
+Article.belongsTo(Category);
+
+//OneToMany
+Category.hasMany(Article);
+
+module.exports = Article;
