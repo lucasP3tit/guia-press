@@ -21,13 +21,21 @@ const slugify = require("slugify");
          Category.create({
             title: title,
             slug: slugify(title)
-         }).then(()=>res.redirect("/"))
+         }).then(()=>res.redirect("/admin/categories"))
       }else{
          res.redirect("/admin/category/new");
       }
  });
 
- router.get("/admin/categories", (req, res)=>{
+ router.post("/admin/category/delete/:id", (req, res)=>{
+      let id = req.params.id;
+      let category = Category.findOne({where:{id:id}});
+      if(category){
+         Category.destroy({where:{id:id}})
+                  .then(()=> res.redirect("/admin/categories"))
+                  .catch(err=>console.log("An error occurs when try to delete category"));
+      }
+      console.log("Category id doesn't exist");
+ });
 
- })
  module.exports = router;

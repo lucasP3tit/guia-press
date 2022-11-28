@@ -22,8 +22,11 @@
                         <td> <%=category.title%> </td>
                         <td> <%=category.slug%> </td>
                         <td> 
-                            <button class="btn btn-warning">Editar</button>
-                            <button class="btn btn-danger">Remover</button>
+                            <a class="btn btn-warning">Editar</a>
+                            <form method="POST" action="/admin/category/delete/<%= category.id %>" style="display:inline">
+                                <button class="btn btn-danger">Remover</button>
+                            </form>
+                            
                         </td>
                     </tr>
                 <%})%>
