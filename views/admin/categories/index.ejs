@@ -23,7 +23,7 @@
                         <td> <%=category.slug%> </td>
                         <td> 
                             <a class="btn btn-warning">Editar</a>
-                            <form method="POST" action="/admin/category/delete/<%= category.id %>" style="display:inline">
+                            <form method="POST" action="/admin/category/delete/<%= category.id %>" style="display:inline" onSubmit="deleteConfirm(event)">
                                 <button class="btn btn-danger">Remover</button>
                             </form>
                             
@@ -36,3 +36,13 @@
         
     </div>
 </body>
+<%- include('../../partials/footer.ejs') %>
+<script>
+    function deleteConfirm(event){
+        event.preventDefault();
+        let decision = confirm("Deseja remover a categoria?");
+        if(decision){
+            event.target.submit();
+        }
+    }
+</script>

@@ -4,7 +4,7 @@ const router = express.Router();
 const slugify = require("slugify");
 
  router.get("/admin/categories", (req, res)=>{
-   Category.findAll()
+   Category.findAll({order:[["id","DESC"]]})
    .then(categories =>{
       res.render("admin/categories/index", {categories: categories});
    })
