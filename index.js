@@ -31,7 +31,20 @@ app.use("/", [
 ])
 
 app.get("/", (req, res)=>{
-    res.render("index");
+    Article.findAll({order:[["id", "DESC"]]})
+    .then(articles=>res.render("index", { articles: articles }))
+    .catch(err=> console.log("An error occurred when loading articles: ", err));
+});
+
+app.get("/article/:slug", (req, res)=>{
+    let slug = req.params.slug
+    Article.findOne({
+        where:{slug: slug}
+    })
+    .then(article=>{
+        res.render("article", { article: article}); 
+    })
+    .catch(err=>console.log("An error occured when try to load article: ", err));
 });
 
 app.listen(8081, ()=>{

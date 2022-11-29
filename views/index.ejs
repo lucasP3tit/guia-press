@@ -1,6 +1,26 @@
 <%- include('partials/header.ejs') %>
 <body>
-    <h1>Teste</h1>
+    <%- include('partials/homenavbar.ejs') %>
+    <div class="container mt-2">
+        <div class="jumbotron">
+            <h1 class="display-4">Bem-vindo ao GuiaPress!</h1>
+            <p class="lead"> Seu site para ler, criar e editar arquivos.</p>
+            <hr class="my-4">
+            <p class="lead">
+              <a class="btn btn-primary btn-lg" href="#" role="button">Aprenda mais</a>
+            </p>
+        </div>
+        <% articles.forEach(article=>{ %>
+           <div class="card mt-2">
+                <div class="card-header"> 
+                   <h2><%= article.title %></h2> 
+                </div>
+                <div class="card-body">
+                    <a href="/article/<%= article.slug %>" class="btn btn-success">Ler artigo</a>
+                </div>
+           </div>
+        <%})%>
+    </div>
 </body>
 
 <%- include('partials/footer.ejs') %>
