@@ -24,15 +24,21 @@ connection.authenticate()
           .catch(err=>console.log("Database connection error: ", err));
 
           
-//Router
+//Routers
 app.use("/", [
     categoriesRouters,
     articlesRouters
 ])
 
+//Routes
 app.get("/", (req, res)=>{
     Article.findAll({order:[["id", "DESC"]]})
-    .then(articles=>res.render("index", { articles: articles }))
+    .then(articles => {
+        Category.findAll()
+        .then(categories => {
+            res.render("index", { articles: articles, categories: categories })
+        })
+    })   
     .catch(err=> console.log("An error occurred when loading articles: ", err));
 });
 
