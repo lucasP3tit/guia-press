@@ -7,11 +7,17 @@
                 <h2>Novo artigo</h2>
             </div>
             <div class="card-body">
-                <form method="POST" action="/category/save">
+                <form method="POST" action="/admin/article/save">
                     <input type="text" placeholder="Digite o título do artigo" name="title" class="form-control mb-2">
-                    <textarea name="descricao" cols="30" rows="10" placeholder="Área do artigo" class="form-control mt-2" id="article"></textarea>
+                    <select name="category" class="form-control mb-2">
+                        <option selected disabled>Selecione uma categoria</option>
+                        <% categories.forEach(category =>{ %>
+                            <option value="<%= category.id %>"> <%= category.title %></option>
+                        <% }) %>
+                    </select>
+                    <textarea name="body" cols="30" rows="10" placeholder="Área do artigo" class="form-control mt-2" id="article"></textarea>
                     <button class="btn btn-success mt-2"> Salvar</button>
-                    <a class="btn btn-primary mt-2" href="/admin/categories">Voltar</a>
+                    <a class="btn btn-primary mt-2" href="/admin/articles">Voltar</a>
                 </form>
             </div>
         </div>
@@ -28,9 +34,8 @@
         language: 'pt_BR',
         plugins:[
             'preview', 'wordcount', 'link', 
-            'image', 'print', 'hr','searchreplace', 
-            'fullscreen', 'insertdatetime','media','table', 
-            'paste'
+            'image', 'searchreplace', 
+            'fullscreen', 'insertdatetime','media','table'
         ]
 
     });
