@@ -38,4 +38,44 @@ const slugify = require("slugify");
       console.log("Category id doesn't exist");
  });
 
+ router.get("/admin/category/edit/:id", (req, res)=>{
+   let id = req.params.id;
+   if(!isNaN(id)){
+      Category.findOne({where:{id:id}}).then(category=>{
+         if(category){
+            res.render("admin/categories/edit", {category:category});
+         }else{
+            res.redirect("/admin/categories");
+         }
+      }).catch(err=>{
+         res.redirect("/admin/categories");
+      })
+   }else{
+      res.redirect("/admin/categories");
+   }
+ });
+
+ router.post("/admin/category/update/:id", (req, res)=>{
+   let id =req.params.id;
+   let title = req.body.title;
+
+   if(!isNaN(id)){
+      Category.update({title:title, slug: slugify(title)}, {where:{id:id}})
+               .then(category=>{
+                  if(category){
+                     res.redirect("/admin/categories");
+                  }else{
+                     res.redirect("/admin/category/edit/"+id);
+                  }
+               })
+               .catch(err=>{
+                  res.redirect("/admin/category/edit/"+id);
+               });
+   }else{
+      res.redirect("/admin/category/edit/"+id);
+   }
+ })
+
  module.exports = router;
+
+ 
