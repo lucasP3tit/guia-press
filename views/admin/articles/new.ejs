@@ -1,0 +1,37 @@
+<%- include('../../partials/header.ejs') %>
+<body>
+    <%- include('../../partials/navbar.ejs') %>
+    <div class="container">
+        <div class="card mt-2">
+            <div class="card-header">
+                <h2>Novo artigo</h2>
+            </div>
+            <div class="card-body">
+                <form method="POST" action="/category/save">
+                    <input type="text" placeholder="Digite o título do artigo" name="title" class="form-control mb-2">
+                    <textarea name="descricao" cols="30" rows="10" placeholder="Área do artigo" class="form-control mt-2" id="article"></textarea>
+                    <button class="btn btn-success mt-2"> Salvar</button>
+                    <a class="btn btn-primary mt-2" href="/admin/categories">Voltar</a>
+                </form>
+            </div>
+        </div>
+        
+    </div>
+</body>
+
+<%- include('../../partials/footer.ejs') %>
+
+<script src="/tinymce/tinymce.min.js"></script>
+<script>
+    tinymce.init({
+        selector: "#article",
+        language: 'pt_BR',
+        plugins:[
+            'preview', 'wordcount', 'link', 
+            'image', 'print', 'hr','searchreplace', 
+            'fullscreen', 'insertdatetime','media','table', 
+            'paste'
+        ]
+
+    });
+</script>
