@@ -38,6 +38,17 @@ router.post("/admin/article/save", (req, res)=>{
         tbCategoryId: category
     })
     .then(()=>res.redirect("/admin/articles"))
-})
+});
+
+router.post("/admin/article/delete/:id", (req, res)=>{
+    let id = req.params.id;
+    let article = Article.findOne({where:{id:id}});
+    if(article){
+       Article.destroy({where:{id:id}})
+                .then(()=> res.redirect("/admin/articles"))
+                .catch(err=>console.log("An error occurs when try to delete article"));
+    }
+    console.log("Article id doesn't exist");
+});
 
 module.exports = router;
