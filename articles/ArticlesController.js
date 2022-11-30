@@ -51,4 +51,58 @@ router.post("/admin/article/delete/:id", (req, res)=>{
     console.log("Article id doesn't exist");
 });
 
+router.get("/admin/article/edit/:id", (req, res)=>{
+    let id = req.params.id;
+    if(!isNaN(id)){
+        Article.findOne({
+            where:{id:id},
+            include: [{ model: Category }]
+        }).then(article => {
+           if(article){
+              Category.findAll().then(categories=>{
+                res.render("admin/articles/edit", { article: article, categories: categories });
+              })
+           }else{
+              res.redirect("/admin/articles");
+           }
+        }).catch(err=>{
+           res.redirect("/admin/articles");
+        })
+     }else{
+        res.redirect("/admin/articles");
+     }
+});
+
+router.post("/admin/article/update/:id", (req, res)=>{
+    let id =req.params.id;
+    let title = req.body.title;
+    let body = req.body.body;
+    let category = req.body.category
+ 
+    if(!isNaN(id)){
+       Article.update(
+        {
+        title:title, 
+        slug: slugify(title),
+        body: body,
+        tbCategoryId: category
+        
+        }, 
+        {
+        where:{ id: id }
+        }
+        ).then(article=>{
+            if(article){
+                res.redirect("/admin/articles");
+            }else{
+                res.redirect("/admin/article/edit/"+id);
+             }
+            }).catch(err=>{
+                res.redirect("/admin/article/edit/"+id);
+            });
+    }else{
+       res.redirect("/admin/article/edit/"+id);
+    }
+  });
+
 module.exports = router;

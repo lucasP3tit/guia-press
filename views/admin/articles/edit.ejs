@@ -1,0 +1,43 @@
+<%- include('../../partials/header.ejs') %>
+<body>
+    <%- include('../../partials/navbar.ejs') %>
+    <div class="container">
+        <div class="card mt-2">
+            <div class="card-header">
+                <h2>Edição de artigo</h2>
+            </div>
+            <div class="card-body">
+                <form method="POST" action="/admin/article/update/<%= article.id %>">
+                    <input type="text" placeholder="Digite o título do artigo" name="title" class="form-control mb-2" value="<%= article.title %>">
+                    <select name="category" class="form-control mb-2">
+                        <option disabled>Selecione uma categoria</option>
+                        <option value="<%=article.tb_category.id %>"><%= article.tb_category.title %></option>
+                        <% categories.forEach(category =>{ if(category.id != article.tb_category.id){ %>
+                            <option value="<%= category.id %>"> <%= category.title %></option>
+                        <% }}) %>
+                    </select>
+                    <textarea name="body" cols="30" rows="10" placeholder="Área do artigo" class="form-control mt-2" id="article" ><%- article.body %></textarea>
+                    <button class="btn btn-success mt-2"> Salvar</button>
+                    <a class="btn btn-primary mt-2" href="/admin/articles">Voltar</a>
+                </form>
+            </div>
+        </div>
+        
+    </div>
+</body>
+
+<%- include('../../partials/footer.ejs') %>
+
+<script src="/tinymce/tinymce.min.js"></script>
+<script>
+    tinymce.init({
+        selector: "#article",
+        language: 'pt_BR',
+        plugins:[
+            'preview', 'wordcount', 'link', 
+            'image', 'searchreplace', 
+            'fullscreen', 'insertdatetime','media','table'
+        ]
+
+    });
+</script>
