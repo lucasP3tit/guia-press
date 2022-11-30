@@ -48,11 +48,37 @@ app.get("/article/:slug", (req, res)=>{
         where:{slug: slug}
     })
     .then(article=>{
-        res.render("article", { article: article}); 
+        Category.findAll()
+        .then(categories =>{
+            res.render("article", { article: article, categories: categories}); 
+        })
+        
     })
     .catch(err=>console.log("An error occured when try to load article: ", err));
 });
 
+app.get("/category/:slug", (req, res)=>{
+    let slug = req.params.slug;
+    Category.findOne({
+        where:{slug: slug},
+        include: [{ model: Article }]
+    })
+    .then(category =>{
+        if(category){
+            Category.findAll()
+            .then(categories =>{
+                res.render("index", { articles: category.tb_articles, categories: categories})
+            })
+        }else{
+            res.redirect("/");
+        }
+    })
+    .catch(err=>{
+        res.redirect("/");
+    })
+});
+
+//Server
 app.listen(8081, ()=>{
     console.log("Server Running");
 });
