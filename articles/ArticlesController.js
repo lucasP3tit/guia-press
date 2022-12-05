@@ -10,7 +10,7 @@ router.get("/admin/articles", (req, res)=>{
     Article.findAll({
         include: [{
             model: Category
-        }]
+        }],
     })
     .then(articles=>{
         res.render("admin/articles/index", {articles:articles})
@@ -104,5 +104,43 @@ router.post("/admin/article/update/:id", (req, res)=>{
        res.redirect("/admin/article/edit/"+id);
     }
   });
+
+  //Pagination
+
+  router.get("/articles/page/:num", (req, res)=>{
+    var page = parseInt(req.params.num);
+    var offset = 0;
+
+    if(isNaN(page || page === 1)){
+        offset = 0;
+    }else{
+        offset = (page-1) * 4;
+        
+    }
+    Article.findAndCountAll({
+        order: [["id", "DESC"]],
+        limit: 4,
+        offset: offset
+    }).then(articles => {
+        let next;
+        
+        if(offset+4 >= articles.count){
+            next = false;
+        }else{
+            next = true;
+        }
+
+        let result = {
+            page: page,
+            next: next,
+            articles: articles
+        }
+
+        Category.findAll().then( categories => {
+            res.render("admin/articles/page", { categories: categories, result: result, articles: result.articles.rows})
+        })
+    })
+  });
+
 
 module.exports = router;

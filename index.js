@@ -32,7 +32,10 @@ app.use("/", [
 
 //Routes
 app.get("/", (req, res)=>{
-    Article.findAll({order:[["id", "DESC"]]})
+    Article.findAll({
+        order:[["id", "DESC"]],
+        limit: 4
+    })
     .then(articles => {
         Category.findAll()
         .then(categories => {
