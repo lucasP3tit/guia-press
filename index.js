@@ -5,6 +5,7 @@ const bodyParser = require("body-parser");
 const connection = require("./database/database");
 const categoriesRouters = require("./categories/CategoriesController");
 const articlesRouters = require("./articles/ArticlesController");
+const usersRouters = require("./users/UserController");
 const Article = require("./articles/Article");
 const Category = require("./categories/Category");
 
@@ -27,7 +28,8 @@ connection.authenticate()
 //Routers
 app.use("/", [
     categoriesRouters,
-    articlesRouters
+    articlesRouters,
+    usersRouters
 ])
 
 //Routes
