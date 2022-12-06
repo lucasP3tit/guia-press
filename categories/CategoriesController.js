@@ -2,8 +2,9 @@ const express = require("express");
 const Category = require("./Category");
 const router = express.Router();
 const slugify = require("slugify");
+const adminAuth = require("../middlewares/adminAuth");
 
- router.get("/admin/categories", (req, res)=>{
+ router.get("/admin/categories", adminAuth, (req, res)=>{
    Category.findAll({order:[["id","DESC"]]})
    .then(categories =>{
       res.render("admin/categories/index", {categories: categories});
@@ -11,11 +12,11 @@ const slugify = require("slugify");
    .catch(err => console.log("Error to get categories: ", err));
  });
 
- router.get("/admin/category/new", (req, res)=>{
+ router.get("/admin/category/new", adminAuth, (req, res)=>{
     res.render("admin/categories/new")
  })
 
- router.post("/category/save", (req, res)=>{
+ router.post("/category/save", adminAuth, (req, res)=>{
       let title = req.body.title;
       if(title){
          Category.create({
@@ -27,7 +28,7 @@ const slugify = require("slugify");
       }
  });
 
- router.post("/admin/category/delete/:id", (req, res)=>{
+ router.post("/admin/category/delete/:id", adminAuth, (req, res)=>{
       let id = req.params.id;
       let category = Category.findOne({where:{id:id}});
       if(category){
@@ -38,7 +39,7 @@ const slugify = require("slugify");
       console.log("Category id doesn't exist");
  });
 
- router.get("/admin/category/edit/:id", (req, res)=>{
+ router.get("/admin/category/edit/:id", adminAuth, (req, res)=>{
    let id = req.params.id;
    if(!isNaN(id)){
       Category.findOne({where:{id:id}}).then(category=>{
@@ -55,7 +56,7 @@ const slugify = require("slugify");
    }
  });
 
- router.post("/admin/category/update/:id", (req, res)=>{
+ router.post("/admin/category/update/:id", adminAuth, (req, res)=>{
    let id =req.params.id;
    let title = req.body.title;
 

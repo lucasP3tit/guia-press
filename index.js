@@ -8,6 +8,7 @@ const articlesRouters = require("./articles/ArticlesController");
 const usersRouters = require("./users/UserController");
 const Article = require("./articles/Article");
 const Category = require("./categories/Category");
+const session = require("express-session");
 
 //View Engine
 app.set("view engine", "ejs");
@@ -18,6 +19,14 @@ app.use(bodyParser.json());
 
 //Static
 app.use(express.static("public"));
+
+//Sessions
+app.use(session({
+    secret:"jahjdhsadjahsd",
+    cookie:{
+        maxAge: 3000000
+    }
+}));
 
 //Database
 connection.authenticate()
@@ -82,6 +91,7 @@ app.get("/category/:slug", (req, res)=>{
         res.redirect("/");
     })
 });
+
 
 //Server
 app.listen(8081, ()=>{
